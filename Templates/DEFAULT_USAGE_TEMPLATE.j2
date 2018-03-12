@@ -1,0 +1,51 @@
+
+{% for search in data %}
+{% set header = "############### "+search|upper+" ANALYSIS ###############" %}
+{% set hblock = header|length*"#" %}
+{{header}}
+{{hblock}}
+
+
+
+### USED {{search|upper}} BREAKDOWN:
+{% for item in data[search].used %}{{item}}
+	>> Usage Count: {{data[search].used[item].count}}\
+{%if options.members%}
+	>> Members:\
+{% for member in data[search].used[item].members %}
+		  {{member}}\
+{% endfor %}\
+{% endif %}\
+{%if options.usage%}
+	>> Usage:\
+{% for use in data[search].used[item].uses %}\
+{%if use.parent%}
+		  {{use.parent}}
+			  {{use.value}}\
+{%else%}
+		  {{use.value}}\
+{% endif %}\
+{% endfor %}\
+{% endif %}
+{% endfor %}
+
+
+### UNUSED {{search|upper}}:
+{% for item in data[search].unused %}    {{item}}
+{% endfor %}
+
+
+### DOUBLE CHECK UNUSED {{search|upper}}:
+{% for item in data[search].unused %}    {{data[search].unused[item].check}}
+{% endfor %}
+
+
+### REMOVE UNUSED {{search|upper}}:
+{% for item in data[search].unused %}    {{data[search].unused[item].remove}}
+{% endfor %}
+
+
+
+{{hblock}}
+{{hblock}}\
+{% endfor %}

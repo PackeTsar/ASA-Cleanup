@@ -1,0 +1,192 @@
+ciscoasa# sh run
+: Saved
+
+: 
+: Hardware:   ASAv, 1024 MB RAM, CPU Xeon 5500 series 2533 MHz
+:
+ASA Version 9.6(4) 
+!
+terminal width 250
+hostname ciscoasa
+names
+name 1.1.1.1 UNUSED_NAME_1
+name 1.1.1.2 UNUSED_NAME_2
+name 1.1.1.3 UNUSED_NAME_3
+name 10.0.0.1 USED_NAME_1
+no mac-address auto
+
+!
+interface GigabitEthernet0/0
+ nameif TEMP
+ security-level 100
+ ip address 192.168.1.11 255.255.255.0 
+!
+interface GigabitEthernet0/1
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface GigabitEthernet0/2
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface GigabitEthernet0/3
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface GigabitEthernet0/4
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!             
+interface GigabitEthernet0/5
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface GigabitEthernet0/6
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface GigabitEthernet0/7
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface GigabitEthernet0/8
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Management0/0
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+ftp mode passive
+object network UNUSED_OBJECT_1
+ host 1.1.1.1
+object network UNUSED_OBJECT_2
+ subnet 2.2.2.0 255.255.255.0
+ description Another Unused Object
+object network UNUSED_OBJECT_3
+ fqdn must.clean.me.up
+object network USED_OBJECT_1
+ host 10.0.0.2
+object-group network UNUSED_OBJECT-GROUP_1
+ network-object 10.0.0.3 255.255.255.255
+object-group network UNUSED_OBJECT-GROUP_2
+ description This thing is messy
+ network-object ::/0
+object-group network USED_OBJECT-GROUP_1
+ network-object host 5.5.5.5
+object-group network USED_OBJECT-GROUP_2
+ description Using a name here
+ network-object host USED_NAME_1
+access-list UNUSED_ACL extended permit ip any any 
+access-list USED_ACL extended permit ip object-group USED_OBJECT-GROUP_1 object-group USED_OBJECT-GROUP_2 
+pager lines 23
+mtu TEMP 1500
+no failover
+no monitor-interface service-module 
+icmp unreachable rate-limit 1 burst-size 1
+no asdm history enable
+arp timeout 14400
+no arp permit-nonconnected
+arp rate-limit 8192
+access-group USED_ACL in interface TEMP
+route TEMP 0.0.0.0 0.0.0.0 192.168.1.1 1
+timeout xlate 3:00:00
+timeout pat-xlate 0:00:30
+timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 sctp 0:02:00 icmp 0:00:02
+timeout sunrpc 0:10:00 h323 0:05:00 h225 1:00:00 mgcp 0:05:00 mgcp-pat 0:05:00
+timeout sip 0:30:00 sip_media 0:02:00 sip-invite 0:03:00 sip-disconnect 0:02:00
+timeout sip-provisional-media 0:02:00 uauth 0:05:00 absolute
+timeout tcp-proxy-reassembly 0:01:00
+timeout floating-conn 0:00:00
+timeout conn-holddown 0:00:15
+user-identity default-domain LOCAL
+aaa authentication ssh console LOCAL 
+no snmp-server location
+no snmp-server contact
+crypto ipsec security-association pmtu-aging infinite
+crypto ca trustpoint _SmartCallHome_ServerCA
+ no validation-usage
+ crl configure
+crypto ca trustpool policy
+ auto-import
+telnet timeout 5
+ssh stricthostkeycheck
+ssh 0.0.0.0 0.0.0.0 TEMP
+ssh timeout 5
+ssh version 2
+ssh key-exchange group dh-group1-sha1
+console timeout 0
+threat-detection basic-threat
+threat-detection statistics access-list
+no threat-detection statistics tcp-intercept
+dynamic-access-policy-record DfltAccessPolicy
+!
+class-map inspection_default
+ match default-inspection-traffic
+!
+!
+policy-map type inspect dns migrated_dns_map_1
+ parameters
+	message-length maximum client auto
+	message-length maximum 512
+	no tcp-inspection
+policy-map global_policy
+ class inspection_default
+	inspect dns migrated_dns_map_1 
+	inspect ftp 
+	inspect h323 h225 
+	inspect h323 ras 
+	inspect ip-options 
+	inspect netbios 
+	inspect rsh 
+	inspect rtsp 
+	inspect skinny  
+	inspect esmtp 
+	inspect sqlnet 
+	inspect sunrpc 
+	inspect tftp 
+	inspect sip  
+	inspect xdmcp 
+policy-map type inspect dns migrated_dns_map_2
+ parameters
+	message-length maximum client auto
+	message-length maximum 512
+	no tcp-inspection
+!
+service-policy global_policy global
+prompt hostname context 
+no call-home reporting anonymous
+call-home
+ profile CiscoTAC-1
+	no active
+	destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+	destination address email callhome@cisco.com
+	destination transport-method http
+	subscribe-to-alert-group diagnostic
+	subscribe-to-alert-group environment
+	subscribe-to-alert-group inventory periodic monthly
+	subscribe-to-alert-group configuration periodic monthly
+	subscribe-to-alert-group telemetry periodic daily
+ profile License
+	destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+	destination transport-method http
+Cryptochecksum:2b1101f24bab6d31e78af81bec8c2c31
+: end

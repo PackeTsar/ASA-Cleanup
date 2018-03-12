@@ -1,0 +1,107 @@
+
+{% set header = "############### ACCESS-LIST HITS ANALYSIS ###############" %}
+{% set hblock = header|length*"#" %}
+{{header}}
+{{hblock}}
+
+{{data.table}}
+
+### ACL HITS BREAKDOWN:
+{% for acl in data.alldata %}\
+{%if data.alldata[acl].hits==0%}\
+{%if not options.hide_unused_acls%}\
+{{acl}}
+	>> Total ACL Hits: {{data.alldata[acl].hits}}
+	>> ACEs:
+{% for ace in data.alldata[acl].aces %}\
+		{{ace}}: {{data.alldata[acl].aces[ace].config}}
+{%if options.ace_hits%}\
+			>> Total ACE Hits: {{data.alldata[acl].aces[ace].hits}}
+{% endif %}\
+{%if options.ace_children and data.alldata[acl].aces[ace].members%}\
+			>> ACE Children:
+{% for child in data.alldata[acl].aces[ace].members %}\
+				{{child}}
+{% endfor %}\
+{% endif %}\
+{% endfor %}\
+{% endif %}\
+{%else%}\
+{%if not options.hide_used_acls%}\
+{{acl}}
+	>> Total ACL Hits: {{data.alldata[acl].hits}}
+	>> ACEs:
+{% for ace in data.alldata[acl].aces %}\
+		{{ace}}: {{data.alldata[acl].aces[ace].config}}
+{%if options.ace_hits%}\
+			>> Total ACE Hits: {{data.alldata[acl].aces[ace].hits}}
+{% endif %}\
+{%if options.ace_children and data.alldata[acl].aces[ace].members%}\
+			>> ACE Children:
+{% for child in data.alldata[acl].aces[ace].members %}\
+				{{child}}
+{% endfor %}\
+{% endif %}\
+{% endfor %}\
+{% endif %}\
+{% endif %}\
+{% endfor %}\
+
+
+### ACES WITH NO HITS:
+{% for acl in data.alldata %}\
+{% for ace in data.alldata[acl].aces %}\
+{%if data.alldata[acl].aces[ace].hits==0%}\
+{%if data.alldata[acl].hits==0%}\
+{%if not options.hide_unused_acls%}\
+	{{data.alldata[acl].aces[ace].config}}
+{% endif %}\
+{% else %}\
+{%if not options.hide_used_acls%}\
+	{{data.alldata[acl].aces[ace].config}}
+{% endif %}\
+{% endif %}\
+{% endif %}\
+{% endfor %}\
+{% endfor %}\
+
+
+### DOUBLE CHECK ACE HITS:
+{% for acl in data.alldata %}\
+{% for ace in data.alldata[acl].aces %}\
+{%if data.alldata[acl].aces[ace].hits==0%}\
+{%if data.alldata[acl].hits==0%}\
+{%if not options.hide_unused_acls%}\
+	show access-list {{acl}} | in line {{ace}} 
+{% endif %}\
+{% else %}\
+{%if not options.hide_used_acls%}\
+	show access-list {{acl}} | in line {{ace}} 
+{% endif %}\
+{% endif %}\
+{% endif %}\
+{% endfor %}\
+{% endfor %}\
+
+
+### UNUSED ACE REMOVAL:
+{% for acl in data.alldata %}\
+{% for ace in data.alldata[acl].aces %}\
+{%if data.alldata[acl].aces[ace].hits==0%}\
+{%if data.alldata[acl].hits==0%}\
+{%if not options.hide_unused_acls%}\
+	no {{data.alldata[acl].aces[ace].config}}
+{% endif %}\
+{% else %}\
+{%if not options.hide_used_acls%}\
+	no {{data.alldata[acl].aces[ace].config}}
+{% endif %}\
+{% endif %}\
+{% endif %}\
+{% endfor %}\
+{% endfor %}\
+
+
+
+{{hblock}}
+{{hblock}}\

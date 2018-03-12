@@ -1,0 +1,9 @@
+access-list cached ACL log flows: total 0, denied 0 (deny-flow-max 4096)
+            alert-interval 300
+access-list UNUSED_ACL; 1 elements; name hash: 0xddc8212
+access-list UNUSED_ACL line 1 extended permit ip any any (hitcnt=0) 0x6ebb613e 
+access-list USED_ACL; 1 elements; name hash: 0x57388299
+access-list USED_ACL line 1 extended permit ip object-group USED_OBJECT-GROUP_1 object-group USED_OBJECT-GROUP_2 (hitcnt=100) 0xc8b1c239 
+  access-list USED_ACL line 1 extended permit ip host 5.5.5.5 host 10.0.0.1 (hitcnt=100) 0xcbf6c0d8 
+  access-list USED_ACL line 1 extended permit ip host 5.5.5.5 host 10.0.0.1 (hitcnt=100) 0xcbf6c0d8 
+  access-list USED_ACL line 1 extended permit ip host 5.5.5.5 host 10.0.0.1 (hitcnt=100) 0xcbf6c0d8 
