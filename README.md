@@ -13,6 +13,7 @@ The version of ASA-Cleanup documented here is: **v1.0.0**
 ## TABLE OF CONTENTS
 1. [How To Use](#how-to-use)
 2. [Example Output](#example-output)
+3. [How It Works](#how-it-works)
 3. [Hackability](#hackability)
 3. [Compile](#compile)
 
@@ -50,10 +51,105 @@ The simplest device info input format is `username:password@HOSTNAMEorIP`. By de
 
 An example config analysis using a direct config pull: `ASA-Cleanup.exe -nogamud username:password:secret@HOSTNAMEorIP:22`
 
+By default, we assume the Netmiko device type is 'cisco_asa', but this can be changed using the `-t` switch
+
 
 
 -----------------------------------------
 ## EXAMPLE OUTPUT
+
+
+### Command Guide
+```
+> ./ASA-Cleanup
+Usage: ASA-Cleanup [options] FILE/DEVICE_INFO
+	Examples:
+		- Check usage of objects in a file containing an ASA's "show run" output
+			>>> ASA-Cleanup -o CONFIGFILE.txt
+			- Show more detailed usage information
+				>>> ASA-Cleanup -muo CONFIGFILE.txt
+			- Check usage of objects, names and object-groups and show detailed usage and members
+				>>> ASA-Cleanup -muong CONFIGFILE.txt
+			- Pull running-config using SSH and check object-group usage
+				>>> ASA-Cleanup -gd admin:password123:secret@192.168.1.1:22
+			- Perform a custom usage analysis on VPN tunnel-groups
+				>>> ASA-Cleanup -c '^tunnel-group ' -p 1 CONFIGFILE.txt
+
+		- Analyze ACL hit-counts on a file containing a 'show access-list' output
+			>>> ASA-Cleanup -l SHOWACL.txt
+			- Show hits per ACE and all ACE children
+				>>> ASA-Cleanup -lei SHOWACL.txt
+			- Hide any ACL with no hits on any of it's ACEs
+				>>> ASA-Cleanup -lx SHOWACL.txt
+			- Pull access-list hits from SSH
+				>>> ASA-Cleanup -ld admin:password123:secret@192.168.1.1:22
+
+		- Get object-group usage and output as raw JSON data
+			>>> ASA-Cleanup -gj CONFIGFILE.txt
+		- Get object-group usage and use a custom Jinja2 template to output data
+			>>> ASA-Cleanup -f MYTEMPLATE.j2 -g CONFIGFILE.txt
+
+
+Options:
+  -h, --help            show this help message and exit
+
+  Pre-Built Usage Patterns:
+    Pre-built ASA config patterns you can easily enable
+
+    -n, --names         Check Name usage in ASA config (-c '^name ' -p 2)
+    -o, --objects       Check Object Usage in ASA config (-c '^object ' -p 2)
+    -g, --object-groups
+                        Check Object-Group usage in ASA config (-c '^object-
+                        group ' -p 2)
+    -a, --access-lists  Check Access-List object usage in ASA config
+
+  Custom Usage Pattern Options:
+    Specify your own regex pattern and word position for usage analysis
+    (must provide regex pattern AND position)
+
+    -c 'some_regex', --custom='some_regex'
+                        Search a custom regex usage pattern (requires a word
+                        position)
+    -p INTEGER, --position=INTEGER
+                        Position of word (in regex matched line) to find in
+                        config
+
+  Usage Breakdown Verbosity:
+    Switch on to see more usage detail
+
+    -u, --usage         Include lines of usage
+    -m, --members       Include indented members
+    -r, --report        Display a report of processed items
+
+  ACL Hit-Count Analysis:
+    Access-List hit count analysis (ASA Only)
+
+    -l, --acl_hits      Perform a hit-count analysis on a 'show access-list'
+                        output
+    -x, --hide_unused_acls
+                        Hide ACLs with no hits on any ACEs
+    -y, --hide_used_acls
+                        Hide ACLs with one or more hits on any ACEs
+    -e, --ace_hits      Breakdown hit-counts for each ACE
+    -i, --ace_children  Breakdown ACE children under each ACE
+
+  Output Formatting:
+    Customize the output with a Jinja2 template, or output raw JSON
+
+    -j, --json          Dump all data out as JSON
+    -f FILE, --format=FILE
+                        Use a custom Jinja2 formatting template
+
+  Direct Data Pull:
+    Use SSH to pull needed data ('show run' or 'show access-list')
+    directly from a device instead of from a file
+
+    -d, --device        Pull data/config directly from a device via SSH
+                        instead of a file
+    -t TYPE, --type=TYPE
+                        Set the Netmiko device type (default is 'cisco_asa')
+> 
+```
 
 
 ### Config Usage Analysis
@@ -280,16 +376,28 @@ USED_ACL
 
 
 --------------------------------------
+## HOW IT WORKS
+
+#### Config Usage Analysis
+ASA-Cleanup performs the config usage analysis with a multi-level search through the configuration using a regular expression and a unique word position. These two inputs will look something like `("^object-group ", 2)` and they are used to match a line containing the unique word, and find that unique word using its position in the line, and also inventory any child lines (members). Once all of the unique words have been inventoried, ASA-Cleanup re-searches the configuration for any instance of the unique words in a different location. When found, the config lines are added to the inventory along with any parent config lines they might have.
+
+The switches you use to search names, objects, object-groups, and access-lists are all small deviations on this same search algorithm. The search can also be run using a custom input by using the `-c` and `-p` switches (see the 'Hackability' section)
+
+
+
+
+--------------------------------------
 ## HACKABILITY
 ASA-Cleanup is designed to be able to custom format the output, or just output raw JSON data to use somewhere else. These functions can be switched using the `-j` switch for JSON output, or `-f` for custom Jinja2 formatting.
+
+#### Custom Searches
+The `-c` switch allows you to specify a custom regular expression for the search and it requires you to also input a word position using the `-p` switch. The command guide shows examples of the usage of a custom search y giving you the values used to search for names, objects, object-groups, and access-lists.
 
 #### JSON Output
 ASA-Cleanup will output formatted JSON data containing all of the analysis and usage data. This is a simple JSON dump of the main data dictionary which is used by the default Jinja2 template to format the data into what you see by default.
 
 #### Jinja2 Custom Format
 The `-f` switch allows you to input the filename of a Jinja2 template. This template file will be used to format the analysis data and display it in the terminal. The default Jinja2 templates are in the Templates folder and can be copied/modified to provide the specific output you want.
-
-
 
 
 
