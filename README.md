@@ -51,3 +51,9 @@ ASA-Cleanup can be compiled with Python 2.7+ or Python 3.6+
   3. Use Pip to install PyInstaller `pip install pyinstaller`
     - You will also need to `pip install netmiko` and `pip install netaddr`
   4. Run command to compile: `pyinstaller --onefile --windowed --icon=acid.ico --clean Acid.py`
+
+
+
+[python_website]: https://www.python.org/
+[pip_win]: https://sites.google.com/site/pydatalog/python/pip-for-windows
+[homebrew]: https://brew.sh/
