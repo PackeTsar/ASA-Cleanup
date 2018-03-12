@@ -388,7 +388,7 @@ The switches you use to search names, objects, object-groups, and access-lists a
 
 --------------------------------------
 ## HACKABILITY
-ASA-Cleanup is designed to be able to custom format the output, or just output raw JSON data to use somewhere else. These functions can be switched using the `-j` switch for JSON output, or `-f` for custom Jinja2 formatting.
+ASA-Cleanup is designed to be hackable: able to output raw JSON data to use somewhere else, use custom Jinja2 formatting, or run customized searches for different config items
 
 #### Custom Searches
 The `-c` switch allows you to specify a custom regular expression for the search and it requires you to also input a word position using the `-p` switch. The command guide shows examples of the usage of a custom search y giving you the values used to search for names, objects, object-groups, and access-lists.
