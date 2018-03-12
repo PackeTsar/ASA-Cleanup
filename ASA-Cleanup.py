@@ -1,4 +1,5 @@
 import re
+import sys
 import json
 import jinja2
 
@@ -97,7 +98,7 @@ def acl_hit_analysis(lines):
 				except Exception as e:
 					print("ERROR! Input must be the output of 'show access-list'")
 					print("    --"+str(e))
-					quit()
+					sys.exit()
 				config = rebuild_acl_config(line)
 				if "(hitcnt=" in line:  # No members will exist
 					hits = get_hits(line)
@@ -450,7 +451,7 @@ def get_creds(options, args):
 	if (":" not in args[0]) or ("@" not in args[0]):
 		print("Device info/credentials malformed")
 		print("Use the '-h' option to see examples")
-		quit()
+		sys.exit()
 	else:
 		sup = args[0].split("@")
 		up = sup[0].split(":")
@@ -499,7 +500,7 @@ def get_file(options, args):
 def get_data(options, args, cmd="show run"):
 	if len(args) == 0:
 		parser.print_help()
-		quit()
+		sys.exit()
 	else:
 		if not options.device:  # Use arg as filename
 			return get_file(options, args)
@@ -668,7 +669,7 @@ if __name__ == "__main__":
 				print("Position missing!")
 				print("Custom Example: usage_check -c '^object-group ' -p 2 CONFIG.txt")
 				print("Use the '-h' option to see examples")
-				quit()
+				sys.exit()
 			else:
 				queue.update({fname:{
 					"regex": options.custom, 
