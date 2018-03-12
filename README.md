@@ -28,9 +28,10 @@ If you download the whole repository, navigate to the **Binaries** folder and ru
   - Windows: `ASA-Cleanup.exe -nogamu ../Examples/ASA_CONFIG.txt`
 
 An example of an analysis of Access-List hits can be seen below. The switches used here, in order, are (-l: Analyze Access-List Hits), (-i: Show children under each ACE in Breakdown), (-e: Show Hit-Counts for each ACE in each ACL in Breakdown).
-  - MacOS/Linux: `./ASA-Cleanup -lie ../Examples/SHOW_ACCESS_LIST.txt`
+  - MacOS/Linux: `ASA-Cleanup.exe -lie ../Examples/SHOW_ACCESS_LIST.txt`
   - Windows: `ASA-Cleanup.exe -lie ../Examples/SHOW_ACCESS_LIST.txt`
 
+### Default Output Format
 The output is typically displayed in four sections:
 1. Item Breakdown
 	- A breakdown of all found items; listing any children/members they might have and anywhere else in the config where they were found
@@ -41,6 +42,13 @@ The output is typically displayed in four sections:
 	- Pre-formatted commands you can copy/paste into the device to make sure you can safely remove the unused items
 4. Removal Quick Commands
 	- Pre-formatted commands you can copy/paste into your device to remove the unused items
+
+### Device-Direct Mode
+ASA-Cleanup (when used with the `-d` switch) can leverage Netmiko to pull down a config or 'show access-list' directly from your device over SSH. Examples of this usage can be seen below.
+
+The simplest device info input format is `username:password@HOSTNAMEorIP`. By default ASA-Cleanup will assume that the enable secret is the same as the password and that we are using TCP port 22. Those can be changed using the format `username:password:secret@HOSTNAMEorIP:22`
+
+An example config analysis using a direct config pull: `ASA-Cleanup.exe -nogamud username:password:secret@HOSTNAMEorIP:22`
 
 
 
@@ -310,7 +318,7 @@ ASA-Cleanup can be compiled with Python 2.7+ or Python 3.6+
 	  - Close Terminal and reopen it, type `python --version` and make sure it shows version 2.7.13 or greater
   2. Install Pip with command `sudo easy_install pip`
   3. Use Pip to install PyInstaller `pip install pyinstaller`
-    - You will also need to `pip install netmiko` and `pip install jinja2`
+	  - You will also need to `pip install netmiko` and `pip install jinja2`
   4. Navigate to the folder with the ASA-Cleanup.py file
   5. Run command to compile: `pyinstaller --onefile --clean ASA-Cleanup.py`
 
