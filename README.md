@@ -277,11 +277,11 @@ USED_ACL
 ASA-Cleanup can be compiled with Python 2.7+ or Python 3.6+
 
 ##### Windows
-  1. Install Python interpreter from the [Python Website][python_website]
+  1. Install Python 2.7.X interpreter from the [Python Website][python_website]
   2. Download "pip-Win" from its [download site][pip_win]
-  3. Put the pip.Win.exe file in the same folder as the ASA-Cleanup.py file
-  3. Open pip-Win, point it at your python.exe file
-    - You may need to look at your start menu Python shortcut properties to find the .exe file
+    - Upgrade pip-Win by running the command `upgrade`
+      - You may get a SSL error and need to download get-pip from https://pip.pypa.io/en/stable/installing/ and place it in the correct folder
+  3. Open pip-Win and start a virtual environment with `venv -c -i ASA-Cleanup`
   4. Install PyInstaller with command `pip install PyInstaller`
     - You will also need to `pip install netmiko` and `pip install jinja2`
   6. Run command to compile: `pyinstaller --onefile --clean ASA-Cleanup.py`
