@@ -295,7 +295,7 @@ The `-f` switch allows you to input the filename of a Jinja2 template. This temp
 
 --------------------------------------
 ## COMPILE
-ASA-Cleanup can be compiled with Python 2.7+ or Python 3.6+
+If you want to compile it yourself instead of using the included binaries, ASA-Cleanup can be compiled with Python 2.7+ or Python 3.6+
 
 #### Windows
   1. Install Python 2.7.X interpreter from the [Python Website][python_website]
