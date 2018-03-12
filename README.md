@@ -11,13 +11,24 @@ The version of ASA-Cleanup documented here is: **v1.0.0**
 
 -----------------------------------------
 ## TABLE OF CONTENTS
-1. [How To Use](#what-is-radiuid)
+1. [How To Use](#how-to-use)
+2. [Example Output](#example-output)
+3. [Compile](#compile)
 
 
 
 -----------------------------------------
 ## HOW TO USE
 ASA-Cleanup is run from the command line with typical switches and parameters to tell it what to do. It processes the config-file, "show access list" file, or device-direct SSH login and then displays its output.
+
+### Basic Usage Example
+If you download the whole repository, navigate to the **Binaries** folder and run the binary. The switches used here, in order, are (-n: Analyze Name Usage), (-o: Analyze Object Usage), (-g: Analyze Object-Group Usage), (-a: Analyze Access-List Usage), (-m: Show Members in the Breakdown), (-u: Show Detailed Usage in the Breakdown).
+  - MacOS/Linux: `./ASA-Cleanup -nogamu ../Examples/ASA_CONFIG.txt`
+  - Windows: `ASA-Cleanup.exe -nogamu ../Examples/ASA_CONFIG.txt`
+
+An example of an analysis of Access-List hits can be seen below. The switches used here, in order, are (-l: Analyze Access-List Hits), (-i: Show children under each ACE in Breakdown), (-e: Show Hit-Counts for each ACE in each ACL in Breakdown).
+  - MacOS/Linux: `./ASA-Cleanup -lie ../Examples/SHOW_ACCESS_LIST.txt`
+  - Windows: `ASA-Cleanup.exe -lie ../Examples/SHOW_ACCESS_LIST.txt`
 
 The output is typically displayed in four sections:
 1. Item Breakdown
@@ -29,12 +40,6 @@ The output is typically displayed in four sections:
 	- Pre-formatted commands you can copy/paste into the device to make sure you can safely remove the unused items
 4. Removal Quick Commands
 	- Pre-formatted commands you can copy/paste into your device to remove the unused items
-
-
-### Basic Use on MacOS/Linux
-If you download the whole repository, navigate to the **Binaries** folder and run the binary `./ASA-Cleanup -nogamu ../Examples/ASA_CONFIG.txt`. The switches used here, in order, are (-n: Analyze Name Usage), (-o: Analyze Object Usage), (-g: Analyze Object-Group Usage), (-a: Analyze Access-List Usage), (-m: Show Members in the Breakdown), (-u: Show Detailed Usage in the Breakdown).
-
-An example of an analysis of Access-List hits can be seen with `./ASA-Cleanup -lie ../Examples/SHOW_ACCESS_LIST.txt`. The switches used here, in order, are (-l: Analyze Access-List Hits), (-i: Show children under each ACE in Breakdown), (-e: Show Hit-Counts for each ACE in each ACL in Breakdown)
 
 
 
@@ -265,8 +270,15 @@ USED_ACL
 
 
 
+--------------------------------------
+## HACKABILITY
+ASA-Cleanup is designed to be able to custom format the output, or just output raw JSON data to use somewhere else. These functions can be switched using the `-j` switch for JSON output, or `-f` for custom Jinja2 formatting.
 
+### JSON Output
+ASA-Cleanup will output formatted JSON data containing all of the analysis and usage data. This is a simple JSON dump of the main data dictionary which is used by the default Jinja2 template to format the data into what you see by default.
 
+### Jinja2 Custom Format
+The `-f` switch allows you to input the filename of a Jinja2 template. This template file will be used to format the analysis data and display it in the terminal. The default Jinja2 templates are in the Templates folder and can be copied/modified to provide the specific output you want.
 
 
 
@@ -293,12 +305,13 @@ ASA-Cleanup can be compiled with Python 2.7+ or Python 3.6+
 	  - Install [Homebrew][homebrew]
 	  - Open Terminal and use Homebrew to install updated Python: `brew install python`
 	  - Open the bash_profile in VI and add the new Python path: `more .bash_profile`
-	    - Insert the line at the bottom: `export PATH="/usr/local/Cellar/python/2.7.13/bin:${PATH}"`
+	    - Insert the line at the bottom: `export PATH="/usr/local/Cellar/python/2.7.14/bin:${PATH}"`
 	  - Close Terminal and reopen it, type `python --version` and make sure it shows version 2.7.13 or greater
   2. Install Pip with command `sudo easy_install pip`
   3. Use Pip to install PyInstaller `pip install pyinstaller`
     - You will also need to `pip install netmiko` and `pip install jinja2`
-  4. Run command to compile: `pyinstaller --onefile --windowed --clean ASA-Cleanup.py`
+  4. Navigate to the folder with the ASA-Cleanup.py file
+  5. Run command to compile: `pyinstaller --onefile --clean ASA-Cleanup.py`
 
 
 
