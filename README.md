@@ -1,6 +1,6 @@
 # ASA-Cleanup ![ASA-Cleanup][logo]
 
-A config and ACL hits analysis tool to help identify unused configuration items
+A Cisco ASA config and ACL analysis tool to help identify unused configuration items
 
 
 -----------------------------------------
