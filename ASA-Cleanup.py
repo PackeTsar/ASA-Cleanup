@@ -2,11 +2,6 @@ import re
 import json
 import jinja2
 
-# PROBABLY NOT: Add colorization of objects in breakdown
-# PROBABLY NOT: Detect ACL usage in "no-hits" locations
-# NEXT: Add ability to customize username/password delineators?
-# NEXT: Add ACL hit graphic analyzer 
-
 
 
 def usage_analysis(lines, pattern, namepos, fname, rmod=None):
