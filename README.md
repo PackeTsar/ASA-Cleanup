@@ -13,6 +13,7 @@ The version of ASA-Cleanup documented here is: **v1.0.0**
 ## TABLE OF CONTENTS
 1. [How To Use](#how-to-use)
 2. [Example Output](#example-output)
+3. [Hackability](#hackability)
 3. [Compile](#compile)
 
 
