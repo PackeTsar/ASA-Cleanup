@@ -90,10 +90,9 @@ object-group network UNUSED_OBJECT-GROUP_1
 object-group network UNUSED_OBJECT-GROUP_2
  description This thing is messy
  network-object ::/0
-object-group network UNUSED_OBJECT-GROUP_2
- network-object object USED_OBJECT_1
 object-group network USED_OBJECT-GROUP_1
  network-object host 5.5.5.5
+ network-object object USED_OBJECT_1
 object-group network USED_OBJECT-GROUP_2
  description Using a name here
  network-object host USED_NAME_1
@@ -140,55 +139,55 @@ threat-detection basic-threat
 threat-detection statistics access-list
 no threat-detection statistics tcp-intercept
 dynamic-access-policy-record DfltAccessPolicy
-!
+!             
 class-map inspection_default
  match default-inspection-traffic
 !
 !
 policy-map type inspect dns migrated_dns_map_1
  parameters
-	message-length maximum client auto
-	message-length maximum 512
-	no tcp-inspection
+  message-length maximum client auto
+  message-length maximum 512
+  no tcp-inspection
 policy-map global_policy
  class inspection_default
-	inspect dns migrated_dns_map_1 
-	inspect ftp 
-	inspect h323 h225 
-	inspect h323 ras 
-	inspect ip-options 
-	inspect netbios 
-	inspect rsh 
-	inspect rtsp 
-	inspect skinny  
-	inspect esmtp 
-	inspect sqlnet 
-	inspect sunrpc 
-	inspect tftp 
-	inspect sip  
-	inspect xdmcp 
+  inspect dns migrated_dns_map_1 
+  inspect ftp 
+  inspect h323 h225 
+  inspect h323 ras 
+  inspect ip-options 
+  inspect netbios 
+  inspect rsh 
+  inspect rtsp 
+  inspect skinny  
+  inspect esmtp 
+  inspect sqlnet 
+  inspect sunrpc 
+  inspect tftp 
+  inspect sip  
+  inspect xdmcp 
 policy-map type inspect dns migrated_dns_map_2
  parameters
-	message-length maximum client auto
-	message-length maximum 512
-	no tcp-inspection
+  message-length maximum client auto
+  message-length maximum 512
+  no tcp-inspection
 !
 service-policy global_policy global
 prompt hostname context 
 no call-home reporting anonymous
 call-home
  profile CiscoTAC-1
-	no active
-	destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
-	destination address email callhome@cisco.com
-	destination transport-method http
-	subscribe-to-alert-group diagnostic
-	subscribe-to-alert-group environment
-	subscribe-to-alert-group inventory periodic monthly
-	subscribe-to-alert-group configuration periodic monthly
-	subscribe-to-alert-group telemetry periodic daily
+  no active
+  destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+  destination address email callhome@cisco.com
+  destination transport-method http
+  subscribe-to-alert-group diagnostic
+  subscribe-to-alert-group environment
+  subscribe-to-alert-group inventory periodic monthly
+  subscribe-to-alert-group configuration periodic monthly
+  subscribe-to-alert-group telemetry periodic daily
  profile License
-	destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
-	destination transport-method http
-Cryptochecksum:2b1101f24bab6d31e78af81bec8c2c31
+  destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+  destination transport-method http
+Cryptochecksum:564a16da414a0f71f66415f0be715313
 : end
