@@ -90,6 +90,8 @@ object-group network UNUSED_OBJECT-GROUP_1
 object-group network UNUSED_OBJECT-GROUP_2
  description This thing is messy
  network-object ::/0
+object-group network UNUSED_OBJECT-GROUP_2
+ network-object object USED_OBJECT_1
 object-group network USED_OBJECT-GROUP_1
  network-object host 5.5.5.5
 object-group network USED_OBJECT-GROUP_2
