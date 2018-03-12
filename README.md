@@ -1,4 +1,4 @@
-# ASA-Cleanup
+# ASA-Cleanup ![ASA-Cleanup][logo]
 
 A config and ACL hits analysis tool to help identify unused configuration items
 
@@ -432,6 +432,7 @@ If you want to compile it yourself instead of using the included binaries, ASA-C
 
 
 
+[logo]: http://www.packetsar.com/wp-content/uploads/ASA-Cleanup-Log-100.png
 [python_website]: https://www.python.org/
 [pip_win]: https://sites.google.com/site/pydatalog/python/pip-for-windows
 [homebrew]: https://brew.sh/
