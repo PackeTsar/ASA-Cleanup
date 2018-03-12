@@ -275,10 +275,10 @@ USED_ACL
 ## HACKABILITY
 ASA-Cleanup is designed to be able to custom format the output, or just output raw JSON data to use somewhere else. These functions can be switched using the `-j` switch for JSON output, or `-f` for custom Jinja2 formatting.
 
-### JSON Output
+#### JSON Output
 ASA-Cleanup will output formatted JSON data containing all of the analysis and usage data. This is a simple JSON dump of the main data dictionary which is used by the default Jinja2 template to format the data into what you see by default.
 
-### Jinja2 Custom Format
+#### Jinja2 Custom Format
 The `-f` switch allows you to input the filename of a Jinja2 template. This template file will be used to format the analysis data and display it in the terminal. The default Jinja2 templates are in the Templates folder and can be copied/modified to provide the specific output you want.
 
 
@@ -289,7 +289,7 @@ The `-f` switch allows you to input the filename of a Jinja2 template. This temp
 ## COMPILE
 ASA-Cleanup can be compiled with Python 2.7+ or Python 3.6+
 
-##### Windows
+#### Windows
   1. Install Python 2.7.X interpreter from the [Python Website][python_website]
   2. Download "pip-Win" from its [download site][pip_win]
 	  - Upgrade pip-Win by running the command `upgrade`
@@ -301,7 +301,7 @@ ASA-Cleanup can be compiled with Python 2.7+ or Python 3.6+
   5. Navigate to the folder with the ASA-Cleanup.py file
   6. Run command to compile: `pyinstaller --onefile --clean ASA-Cleanup.py`
 
-##### MacOS/Linux
+#### MacOS/Linux
   1. Install Python 2.7.X and set as default interpreter
 	  - Install [Homebrew][homebrew]
 	  - Open Terminal and use Homebrew to install updated Python: `brew install python`
