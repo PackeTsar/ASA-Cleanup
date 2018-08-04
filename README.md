@@ -5,7 +5,7 @@ A Cisco ASA config and ACL analysis tool to help identify unused configuration i
 
 -----------------------------------------
 ## VERSION
-The version of ASA-Cleanup documented here is: **v1.0.0**
+The version of ASA-Cleanup documented here is: **v1.0.1**
 
 
 
