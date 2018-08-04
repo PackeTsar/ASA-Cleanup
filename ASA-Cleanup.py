@@ -331,11 +331,11 @@ default_hits_j2 = """
 {%if data.alldata[acl].aces[ace].hits==0%}\
 {%if data.alldata[acl].hits==0%}\
 {%if not options.hide_unused_acls%}\
-	show access-list {{acl}} | in line {{ace}} 
+	show access-list {{acl}} | in line {{ace}}_
 {% endif %}\
 {% else %}\
 {%if not options.hide_used_acls%}\
-	show access-list {{acl}} | in line {{ace}} 
+	show access-list {{acl}} | in line {{ace}}_
 {% endif %}\
 {% endif %}\
 {% endif %}\
